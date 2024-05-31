@@ -32,16 +32,18 @@ Per executar-lo ho farem amb la comanda <strong>build</strong>, seguida de la et
 docker build -t scrapensenyament ./
 ```
 
-D'aquesta manera creem la imatge i podem veure que aquesta existeix fent servir la comanda `docker images`:
+D'aquesta manera ja haurem crear la imatge. Per veure que l'hem creada correctament podem comprovar-ho fent servir la comanda `docker images`:
 
 ![imatge no carregda](/scrapEnsenyament/img/1_dockerBuild_creacioImatge.png)
 
-Un cop tenim la imatge construida podem fer servir aquesta imatge per tal de crear un contenidor que executi el programa un cop s'arranqui. Així doncs creem el contenidor. Podem fer-ho fent docker run -it scrapensenyament (que el crea i l'activa) o en dos passos (amb create i després amb start). En fer servir create la sintaxis es ```docker create nom_imatge```. En aquest cas tenim la flag o opció --name que ens permet donar un nom al contenidor (perque el nom no sigui aleatori) així que fem:
+Un cop tinguem la imatge construida podem fer servir aquesta imatge per tal de crear un contenidor o els que volguem (que idealment podrem desplegar en un servidor directmaent sempre que siguin de kernel linux i tinguin soport de docker, si hem creat la imatge en alguna distribució de linux). Aquest contenidor executarà automàticament el programa un cop arranqui.
+
+Per crear el contenidor podrem fer-ho fent docker run -it scrapensenyament (que el crea i l'activa a partir de la imatge scrapensenyament que acabem de crear) o en dos passos (amb create i després amb start). En fer servir create, la sintaxis serà ```docker create scraensenyament```. En aquest cas tenim la flag o opció --name que ens permetrà donar un nom al contenidor (perque el nom no sigui aleatori) així que li donarem de nom "contenidor_scrap_ensenyament" amb la següent comanda:
 
 ```
 docker create --name contenidor_scrap_ensenyament scrap_ensenyament
 ``
-I després fem servir la sintaxi ```docker start nom_contenidor```que en aquest podem enriquir amb la flag -a per redirigir per pantalla la sortida del contenidor (que serà el print per pantalla del programa [parsejaDifCob.py](/scrapEnsenyament/parsejaDifCob.py)):
+Després d'haver creat el contenidor farem servir la sintaxi ```docker start contenidor_scrap_ensenyament```que en aquest podem enriquir amb la flag -a per redirigir per pantalla la sortida del contenidor (que serà el print per pantalla del programa [parsejaDifCob.py](/scrapEnsenyament/parsejaDifCob.py)):
 
 ```
 docker start -a contenidor_scrap_ensenyament
@@ -52,6 +54,8 @@ Podem veure el resultat de les dues comandes anteriors en la següent imatge:
 ![imatge start i create no ha carregat](/scrapEnsenyament/img/startIcreate_demo.PNG)
 
 NOTA: No considero recomanable abuscar da la comanda de docker ```run``` perquè cada cop que l'utilitzem estem creant un nou contenidor i corrent-lo, no estem executant un contenidor que ja està creat. En canvi, si fem servir la comanda ```start`` sempre estem utilitzant un conductor ja existent (que crearem només un sol cop amb create).
+
+NOTA 2: Si el contenidor tingués també entrada de l'usuari haruiem de fer servir la flag -i en fer start perquè puguem interactuar amb ell: (docker start -ai contenidor_scrap_ensenyament).
 
 
 
