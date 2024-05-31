@@ -38,12 +38,12 @@ D'aquesta manera ja haurem crear la imatge. Per veure que l'hem creada correctam
 
 Un cop tinguem la imatge construida podem fer servir aquesta imatge per tal de crear un contenidor o els que volguem (que idealment podrem desplegar en un servidor directmaent sempre que siguin de kernel linux i tinguin soport de docker, si hem creat la imatge en alguna distribució de linux). Aquest contenidor executarà automàticament el programa un cop arranqui.
 
-Per crear el contenidor podrem fer-ho fent docker run -it scrapensenyament (que el crea i l'activa a partir de la imatge scrapensenyament que acabem de crear) o en dos passos (amb create i després amb start). En fer servir create, la sintaxis serà ```docker create scraensenyament```. En aquest cas tenim la flag o opció --name que ens permetrà donar un nom al contenidor (perque el nom no sigui aleatori) així que li donarem de nom "contenidor_scrap_ensenyament" amb la següent comanda:
+Per crear el contenidor podrem fer-ho fent ```docker run -it scrapensenyament``` (que el crea i l'activa a partir de la imatge scrapensenyament que acabem de crear) o en dos passos (amb create i després amb start). En fer servir create, la sintaxis serà ```docker create scrapensenyament```. En aquest cas tenim la flag o opció ```--name``` que ens permetrà donar un nom al contenidor (perque el nom no sigui aleatori) així que li donarem de nom "contenidor_scrap_ensenyament" amb la següent comanda:
 
 ```
 docker create --name contenidor_scrap_ensenyament scrap_ensenyament
-``
-Després d'haver creat el contenidor farem servir la sintaxi ```docker start contenidor_scrap_ensenyament```que en aquest podem enriquir amb la flag -a per redirigir per pantalla la sortida del contenidor (que serà el print per pantalla del programa [parsejaDifCob.py](/scrapEnsenyament/parsejaDifCob.py)):
+```
+Després d'haver creat el contenidor farem servir la sintaxi ```docker start contenidor_scrap_ensenyament```que en aquest cas podrem enriquir amb la flag -a per redirigir per pantalla la sortida del contenidor (que serà el print per pantalla del programa [parsejaDifCob.py](/scrapEnsenyament/parsejaDifCob.py)):
 
 ```
 docker start -a contenidor_scrap_ensenyament
