@@ -14,16 +14,19 @@ https://github.com/blackcub3s/projectesDocker/blob/29f9aa18c99577194c8d3424dd491
 
 Ens interessa que aquest programa corri dins d'un entorn compartimentat, on ja hi hagi totes les dependències instalades (no només python 3 sino també els mòduls no pertanyents a llibreria estàndar tals com PyPDF2 (que passa PDF a text pla) o pytz (que permet controlar les hores mostrades de forma que es mostri l'hora espanyola sempre en tot moment). El servidor que el contingui probablement no tindrà aquest es dependències i de ben segur tampoc tindrem accés als permisos necessaris per poder instalar el que necessitem. Per tal de fer això una màquina virtual potser serviria però consumiria molts recursos: no necessitem el nostre propi sistema operatiu, només es necessiten les dependències i l'accés al kernel del sistema operatiu. Per solucionar-ho tenim docker: un sistema de contenidors, també compartimentat com una màquina virtual però molt més ràpid en execució, menys consumidor de memòria ram i d'espai (coses que no sobre en els servidors que tenen recursos compartits). 
 
-Abans de crear un contenidor docker haurem de crear primer una imatge amb el seu propi sistema d'arxius (amb el nostre programa i les dependències instalades). Per fer-ho he creat el següent dockerfile:
+Abans de crear un contenidor docker amb la nostra app haurem de crear una nova imatge personalitzada amb el seu propi sistema d'arxius (amb l'script/S del nostre programa i les dependències instalades que aquest necessiti). Per fer-ho escriurem i executarem un fitxer <strong>dockerfile</strong> que contindrà les instruccions per tal de crear aquesta nova imatge: 
+- 1. la imatge base de la qual partirem per crear la imatge nova (la base serà la imatge de python3, vegeu comanda FROM).
+- 2. El directori de treball que serà l'arrel del contenidor que derivi de la imatge on s'executaran les comandes (vegeu comanda WORKDIR).
+- 3. He instal·lat les dependències amb la comanda RUN (idealment millor anidar-les amb un && en comptes de fer diverses comandes RUN per tenir més eficiència).
+- 4. He copiat del meu sistema a dins el directori de la imatge personalitzada el codi que necssita estar dins el sistema d'arxius de la nova imatge.
+- 5. He escrit la comanda per defecte que es correrà en executar un contenidor derivat de la nova imatge que ens generarà el dockerfile en ser executat.
 
-https://github.com/blackcub3s/projectesDocker/blob/29f9aa18c99577194c8d3424dd491a2a01e2f704/scrapEnsenyament/parsejaDifCob.py#L3-L14
-
-Per tal de crear la imatge necessitem executar el següent dockerfile:
+El docker file ha quedat, doncs, així:
 
 https://github.com/blackcub3s/projectesDocker/blob/eecf579692d80f43d7c0b74788aa486d176b97a2/scrapEnsenyament/Dockerfile#L1-L14
 
 
-Per executar-lo ho farem amb la comanda build, seguida de la etiqueta -t que ens permetrà donar el nom que nosaltres volguem a la imatge (scrapensenyament) i seguit de . o de ./ que ens permetrà executar el dockerfile si correm la comanda a la mateixa carpeta on estigui:
+Per executar-lo ho farem amb la comanda <strong>build</strong>, seguida de la etiqueta -t que ens permetrà donar el nom que nosaltres volguem a la imatge (que l'anomenarem scrapensenyament) i seguit de . o de ./ que ens permetrà executar el dockerfile si correm la comanda a la mateixa carpeta on estigui:
 
 ```
 docker build -t scrapensenyament ./
