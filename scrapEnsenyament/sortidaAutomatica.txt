@@ -1,0 +1,31 @@
+execució script --> [ 28/05/2024 || 18:00h ]
+difCob Lleida.pdf descarregat correctament!
+difCob Girona.pdf descarregat correctament!
+difCob BaixLlob_CREDA_CFA.pdf descarregat correctament!
+difCob VallesOccidental.pdf descarregat correctament!
+difCob aran.pdf descarregat correctament!
+------------------------------
+
+ -- cerca en --> [difCob Lleida.pdf]
+	No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob Girona.pdf]
+	No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob BaixLlob_CREDA_CFA.pdf]
+	No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob VallesOccidental.pdf]
+	No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob aran.pdf]
+	No s'han trobat especialitats, per ara, en aquest document
+
