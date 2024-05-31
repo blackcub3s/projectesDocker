@@ -99,7 +99,7 @@ if __name__ == "__main__":
                         ("difCob VallesOccidental.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/valles-occidental/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/VOC-SEC-dificil-cobertura-oferta-vacants.pdf"), 
                         ("difCob aran.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/alt-pirineu-aran/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/APA-SEC-dificil-cobertura-oferta-vacants.pdf")]
     
-    #especialitats buscades als PDFs (anglès, orientacio educativa i sistemes i apps informatiques -627-)
+    #especialitats buscades als PDFs
     especialitats = ["AN","PSI","627"]
     
 
@@ -108,7 +108,3 @@ if __name__ == "__main__":
     guardaPdfs(llista_documents, True) 
     fesScrapDocuments(especialitats, llista_documents)
     esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
-    
-    
-    
-    
