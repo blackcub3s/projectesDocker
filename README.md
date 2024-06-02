@@ -41,7 +41,7 @@ Un cop tinguem la imatge construida podem fer servir aquesta imatge per tal de c
 Per crear el contenidor podrem fer-ho fent ```docker run -it scrapensenyament``` (que el crea i l'activa a partir de la imatge scrapensenyament que acabem de crear) o en dos passos (amb create i després amb start). En fer servir create, la sintaxis serà ```docker create scrapensenyament```. En aquest cas tenim la flag o opció ```--name``` que ens permetrà donar un nom al contenidor (perque el nom no sigui aleatori) així que li donarem de nom "contenidor_scrap_ensenyament" amb la següent comanda:
 
 ```
-docker create --name contenidor_scrap_ensenyament scrap_ensenyament
+docker create --name contenidor_scrap_ensenyament scrapensenyament
 ```
 Després d'haver creat el contenidor farem servir la sintaxi ```docker start contenidor_scrap_ensenyament```que en aquest cas podrem enriquir amb la flag -a per redirigir per pantalla la sortida del contenidor (que serà el print per pantalla del programa [parsejaDifCob.py](/scrapEnsenyament/parsejaDifCob.py)):
 

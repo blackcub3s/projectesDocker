@@ -88,23 +88,66 @@ def esborra_pdfs(ll_esp, carregatPdfs):
             os.remove(pdf)
         
         
+#PRE: ll_esp: la llista espeicalitats | cataluyaCentral: una tupla amb dos valors (el nom del pdf de la cat central i la seva url
+#     cal que existeixi el pdf de la catalunya central al directori de treball.
+#POST: Impressio de si hi ha o no especialitats a la catalunyacentral i quines, si n'hi ha
+#FUNCIONAMENT: Es una funció especial que lllegeix el document de la catalunya central que
+# és únic i requereix adaptar-s'hi. Llegeix perfecte al menys per a un nombre de documents no nul
+def fesScrapCatalunyaCentral(ll_esp, catalunyaCentral):
+    print("------------------------------\n")
+    print(" -- cerca ESPECÍFICA en --> ["+catalunyaCentral[0]+"]")
+
+    textPDF = pdf_to_text(catalunyaCentral[0]) 
+    ll_linies_PDF = textPDF.split("\n")
+
+    i = 0
+    trobat = False
+    while i < len(ll_linies_PDF):
+        linia = ll_linies_PDF[i]
+        try:
+            if linia.index("Especialitat") == 0:
+                for esp in ll_esp:
+                    if esp in ll_linies_PDF[i+1].split()[0]:
+                        print("\t[[[ "+esp+ " ]]]\t"+ll_linies_PDF[i+1])
+                        trobat = True
+                
+                i = i + 1 #salto la linia seguent perque no te sentit mirar una linia que ja se que no conte el grup Especialitat
+        except ValueError:
+            xuclaSeguentLinia = False
+        
+        i = i + 1
+
+    if not trobat:
+        print("\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central")
+    print("")
+
+
+    
+
+
+
 if __name__ == "__main__":
     #MOSTRO L'HORA EN QUE S'HA EXECUTAT L'SCRIPT
     imprimeix_hora_espanyola()
 
     #LLISTA DE TUPLES (nom amb que guardaré el document, url d'on fem scrap del document)
     llista_documents = [("difCob Lleida.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/lleida/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/LLE-SEC-dificil-cobertura-oferta-vacants.pdf"),
+                        ("difCob Tarragona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/tarragona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TAR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob Girona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/girona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/GIR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob BaixLlob_CREDA_CFA.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/baix-llobregat/personal-docent/nomenaments-telematics/dificil-cobertura/serveis-educatius/PENDENTS_BLL-Serveis-Educatius-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob VallesOccidental.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/valles-occidental/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/VOC-SEC-dificil-cobertura-oferta-vacants.pdf"), 
                         ("difCob aran.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/alt-pirineu-aran/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/APA-SEC-dificil-cobertura-oferta-vacants.pdf")]
     
+    #EL PDF DE LA CATALUNYA CENTRAL ES MOLT DIFERENT I CAL TRACTAR-LO A PART
+    catalunyaCentral = ("difCob CatalunyaCentral.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/catalunya-central/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/CCE-SEC-dificil-cobertura-oferta-vacants.pdf")
+    
+
     #especialitats buscades als PDFs
     especialitats = ["AN","PSI","627"]
     
 
-
-    # si poso true actualitza els documents en temps real, sino tira dels que has descarregat prèviament.
-    guardaPdfs(llista_documents, True) 
+    # si poso true actualitza els documents en temps real, sino tira dels que has descarregat prèviament (NO ELS GUARDA)
+    guardaPdfs(llista_documents+[catalunyaCentral], True)  
     fesScrapDocuments(especialitats, llista_documents)
-    esborra_pdfs(llista_documents,True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
+    fesScrapCatalunyaCentral(especialitats, catalunyaCentral)
+    esborra_pdfs(llista_documents+[catalunyaCentral],True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
