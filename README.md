@@ -57,6 +57,52 @@ NOTA: No considero recomanable abuscar da la comanda de docker ```run``` perquè
 
 NOTA 2: Si el contenidor tingués també entrada de l'usuari haruiem de fer servir la flag -i en fer start perquè puguem interactuar amb ell: (docker start -ai contenidor_scrap_ensenyament).
 
+La sortida per pantalla del programa és la següent:
 
+```
+execució script --> [ 02/06/2024 || 20:51h ]
+difCob Lleida.pdf descarregat correctament!
+difCob Tarragona.pdf descarregat correctament!
+difCob Girona.pdf descarregat correctament!
+difCob BaixLlob_CREDA_CFA.pdf descarregat correctament!
+difCob VallesOccidental.pdf descarregat correctament!
+difCob aran.pdf descarregat correctament!
+difCob CatalunyaCentral.pdf descarregat correctament!
+------------------------------
+
+ -- cerca en --> [difCob Lleida.pdf]
+        No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob Tarragona.pdf]
+        No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob Girona.pdf]
+        No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob BaixLlob_CREDA_CFA.pdf]
+        No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca en --> [difCob VallesOccidental.pdf]
+        [[[ AN ]]]      AN-29/05 (1)  AN-Anglès                                             TERMINI OBERT 
+
+------------------------------
+
+ -- cerca en --> [difCob aran.pdf]
+        No s'han trobat especialitats, per ara, en aquest document
+
+------------------------------
+
+ -- cerca ESPECÍFICA en --> [difCob CatalunyaCentral.pdf]
+        [[[ 627 ]]]     627 SISTEMES I APLICACIONS INFORMÀTIQUES    
+        [[[ 627 ]]]     627 SISTEMES I APLICACIONS INFORMÀTIQUES    
+```
 
 # 3. to do
