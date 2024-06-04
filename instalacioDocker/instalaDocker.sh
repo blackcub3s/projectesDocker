@@ -6,7 +6,6 @@
 sudo apt remove docker docker-engine docker.io containerd runc
 
 #actualitzar respositoris i instalar
-
 sudo apt update
 sudo apt install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -21,7 +20,7 @@ echo \
 sudo apt-get update
 
 
-#ACTUALITZO I INSTALO docker
+#ACTUALITZO I INSTALO DOCKER
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
@@ -29,6 +28,7 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 ###########################
 #     POST INSTALACIÓ     #
 ###########################
+
 # CAL modificar els permisos de l'arxiu /var/run/docker.sock per al teu usuari.
 # Si no, en fer docker version (entre altres comandes), petarà:
  sudo chmod ugo+rwx /var/run/docker.sock
