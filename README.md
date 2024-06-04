@@ -4,37 +4,42 @@
 
 # 1. Introducció
 
+En aquesta carpeta mostro desplegaments de projectes docker. Per tal d'instal·lar docker es pot fer servir el següent dockerfile, que m'ha funcionat per a una distribució de linuxmint. Un cop estigui instal·lat podeu provar els projectes desplegats:
+
+https://github.com/blackcub3s/projectesDocker/blob/5470b0485e9feb8026d3cfd3dc5c02bcd0a52bb3/instalacioDocker/instalaDocker.sh#L5-L34
+
 # 2.ScrapEnsenyament
 
-Dins de la carpeta [scrapEnsenyament](/scrapEnsenyament/) podem trobar l'script parsejaDifCob.py que pren una llista de URLs on hi ha diversos pdfs online amb ofertes laborals, que es van actualitzant periòdicament, en els quals volem cercar grups de paraules (en aquest cas especialitats docents de les quals ens pugui interessar fer un seguiment).
+Dins de la carpeta [scrapEnsenyament](/scrapEnsenyament/) podem trobar l'script parsejaDifCob.py que pren una llista de URLs on hi ha diversos pdfs online amb ofertes laborals d'una borsa de professorat, que es van actualitzant periòdicament. En aquests llistats volem cercar grups de paraules (en aquest cas especialitats docents de les quals ens pugui interessar fer un seguiment).
 
-Per fer això el programa descarrega els pdfs, obté el seu text pla i cerca els grups de paraules. Per cada PDF informarà per pantalla si existeixen ofertes laborals i, en breus, mitjançant notificació "push" se m'avisarà al mòbil de forma periòdica de les ofertes que van sortint:
+Per fer això el programa descarrega els pdfs, obté el seu text pla i cerca els grups de paraules dins dels text pla de cada PDF. Per cada PDF informarà pel canal estàndard de sortida si existeixen ofertes laborals i, en breus, mitjançant notificació "push" s¡avisarà al mòbil de forma periòdica de les ofertes que van sortint:
 
 https://github.com/blackcub3s/projectesDocker/blob/29f9aa18c99577194c8d3424dd491a2a01e2f704/scrapEnsenyament/parsejaDifCob.py#L3-L110
 
-Ens interessa que aquest programa corri dins d'un entorn compartimentat, on ja hi hagi totes les dependències instalades (no només python 3 sino també els mòduls no pertanyents a llibreria estàndar tals com PyPDF2 (que passa PDF a text pla) o pytz (que permet controlar les hores mostrades de forma que es mostri l'hora espanyola sempre en tot moment). El servidor que el contingui probablement no tindrà aquest es dependències i de ben segur tampoc tindrem accés als permisos necessaris per poder instalar el que necessitem. Per tal de fer això una màquina virtual potser serviria però consumiria molts recursos: no necessitem el nostre propi sistema operatiu, només es necessiten les dependències i l'accés al kernel del sistema operatiu. Per solucionar-ho tenim docker: un sistema de contenidors, també compartimentat com una màquina virtual però molt més ràpid en execució, menys consumidor de memòria ram i d'espai (coses que no sobre en els servidors que tenen recursos compartits). 
+Ens interessa que aquest programa corri dins d'un entorn compartimentat, on ja hi hagi totes les dependències instalades (no només python 3 sino també els mòduls no pertanyents a llibreria estàndar tals com PyPDF2 (que passa PDF a text pla) o pytz (que permet controlar les hores mostrades de forma que es mostri l'hora espanyola sempre en tot moment). El servidor que el contingui probablement no tindrà aquestes dependències i de ben segur tampoc tindrem accés als permisos necessaris per poder instalar el que necessitem. Per tal de fer això una màquina virtual potser serviria però consumiria molts recursos, ja que requereix un sistema operatiu propi i emulació del hardware, que no necessitem. Només necessitem tenir les dependències instal·lades i l'accés al kernel del sistema operatiu. Això és justament el que fa docker: és un sistema de contenidors, compartimentat com una màquina virtual però molt més ràpid en execució, menys consumidor de memòria ram i d'espai (recursos que no sobren en servidors en recursos compartits). 
 
 Abans de crear un contenidor docker amb la nostra app haurem de crear una nova imatge personalitzada amb el seu propi sistema d'arxius (amb l'script/S del nostre programa i les dependències instalades que aquest necessiti). Per fer-ho escriurem i executarem un fitxer <strong>dockerfile</strong> que contindrà les instruccions per tal de crear aquesta nova imatge: 
+
 - 1. la imatge base de la qual partirem per crear la imatge nova (la base serà la imatge de python3, vegeu comanda FROM).
 - 2. El directori de treball que serà l'arrel del contenidor que derivi de la imatge on s'executaran les comandes (vegeu comanda WORKDIR).
 - 3. He instal·lat les dependències amb la comanda RUN (idealment millor anidar-les amb un && en comptes de fer diverses comandes RUN per tenir més eficiència).
 - 4. He copiat del meu sistema a dins el directori de la imatge personalitzada el codi que necssita estar dins el sistema d'arxius de la nova imatge.
 - 5. He escrit la comanda per defecte que es correrà en executar un contenidor derivat de la nova imatge que ens generarà el dockerfile en ser executat.
 
-El docker file ha quedat, doncs, així:
+El dockerfile ha quedat, doncs, així:
 
 https://github.com/blackcub3s/projectesDocker/blob/eecf579692d80f43d7c0b74788aa486d176b97a2/scrapEnsenyament/Dockerfile#L1-L14
 
 
-Per executar-lo ho farem amb la comanda <strong>build</strong>, seguida de la etiqueta -t que ens permetrà donar el nom que nosaltres volguem a la imatge (que l'anomenarem scrapensenyament) i seguit de . o de ./ que ens permetrà executar el dockerfile si correm la comanda a la mateixa carpeta on estigui:
+Per executar-lo ho farem amb la comanda <strong>build</strong>, seguida de la etiqueta -t que ens permetrà donar el nom que nosaltres volguem a la imatge que volguem, i acabat amb . o ./ que ens permetrà executar el dockerfile des de la carpeta o directori on posem la comanda. Així doncs, nosaltres creem una image anomenada "scrapensenyament" amb la següent comanda:
 
 ```
 docker build -t scrapensenyament ./
 ```
 
-D'aquesta manera ja haurem crear la imatge. Per veure que l'hem creada correctament podem comprovar-ho fent servir la comanda `docker images`:
+Per veure que hem creat aquesta imatge correctament podem comprovar-ho fent servir la comanda `docker images`:
 
-![imatge no carregda](/scrapEnsenyament/img/1_dockerBuild_creacioImatge.png)
+![Ep! imatge no carregada.](/scrapEnsenyament/img/1_dockerBuild_creacioImatge.png)
 
 Un cop tinguem la imatge construida podem fer servir aquesta imatge per tal de crear un contenidor o els que volguem (que idealment podrem desplegar en un servidor directmaent sempre que siguin de kernel linux i tinguin soport de docker, si hem creat la imatge en alguna distribució de linux). Aquest contenidor executarà automàticament el programa un cop arranqui.
 
