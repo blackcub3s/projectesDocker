@@ -2,13 +2,15 @@
 
 # 0. Índex
 
+TO DO
+
 # 1. Introducció
 
 En aquesta carpeta mostro desplegaments de projectes docker. Per tal d'instal·lar docker es pot fer servir el següent dockerfile, que m'ha funcionat per a una distribució de linuxmint. Un cop estigui instal·lat podeu provar els projectes desplegats:
 
 https://github.com/blackcub3s/projectesDocker/blob/5470b0485e9feb8026d3cfd3dc5c02bcd0a52bb3/instalacioDocker/instalaDocker.sh#L5-L34
 
-# 2.ScrapEnsenyament
+# 2. ScrapEnsenyament
 
 Dins de la carpeta [scrapEnsenyament](/scrapEnsenyament/) podem trobar l'script parsejaDifCob.py que pren una llista de URLs on hi ha diversos pdfs online amb ofertes laborals d'una borsa de professorat, que es van actualitzant periòdicament. En aquests llistats volem cercar grups de paraules (en aquest cas especialitats docents de les quals ens pugui interessar fer un seguiment).
 
