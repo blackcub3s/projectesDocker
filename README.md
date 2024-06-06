@@ -19,7 +19,7 @@ https://github.com/blackcub3s/projectesDocker/blob/5470b0485e9feb8026d3cfd3dc5c0
 
 Dins de la carpeta [scrapEnsenyament](/scrapEnsenyament/) podem trobar l'script parsejaDifCob.py que pren una llista de URLs on hi ha diversos pdfs online amb ofertes laborals d'una borsa de professorat, que es van actualitzant periòdicament. En aquests llistats volem cercar grups de paraules (en aquest cas especialitats docents de les quals ens pugui interessar fer un seguiment).
 
-Per fer això el programa descarrega els pdfs, obté el seu text pla i cerca els grups de paraules dins dels text pla de cada PDF. Per cada PDF informarà pel canal estàndard de sortida si existeixen ofertes laborals i, en breus, mitjançant notificació "push" s¡avisarà al mòbil de forma periòdica de les ofertes que van sortint:
+Per fer això el programa descarrega els pdfs, obté el seu text pla i cerca els grups de paraules dins dels text pla de cada PDF. Per cada PDF informarà pel canal estàndard de sortida si existeixen ofertes laborals i també enviarà una notificació "push" al meu mòbil de forma periòdica de les ofertes que van sortint.
 
 https://github.com/blackcub3s/projectesDocker/blob/29f9aa18c99577194c8d3424dd491a2a01e2f704/scrapEnsenyament/parsejaDifCob.py#L3-L110
 
