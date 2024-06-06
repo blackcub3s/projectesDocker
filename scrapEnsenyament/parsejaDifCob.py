@@ -5,15 +5,23 @@ from datetime import datetime
 import os
 import PyPDF2
 import pytz
+from auxPushover import enviarNotificacio_Pushover
 
+
+s = '' #on posaré l'string de la notificació
 
 # COMPUTO L'HORA A ESPANYA (EL CONTENIDOR TÉ UNA HORA DIFERENT) i l'imprimeixo per pantalla. IIndispensable usar pytz
 def imprimeix_hora_espanyola():
+    global s 
+
     current_time = str(datetime.now(pytz.timezone("Europe/Madrid")))  #per escollir timezone fas pytz.all_timezones
     dia, hora = current_time.split()
     dia, hora = dia.split("-"), hora.split(":")
     dia.reverse()
-    print("execució script --> [ "+dia[0]+"/"+dia[1]+"/"+dia[2]+" || "+hora[0]+":"+hora[1]+"h ]")
+
+    missatge = "execució script --> [ "+dia[0]+"/"+dia[1]+"/"+dia[2]+" || "+hora[0]+":"+hora[1]+"h ]"
+    s = s + missatge + "\n"
+    print(missatge)
 
 
 #FUNCIO FETA PER XAT GPT
@@ -63,8 +71,12 @@ def guardaPdfs(llista_documents, descarregals):
 # POST: S'imprimeix cada linia que té una ocurrència de qualsevol dels elements
 #      (especialitats) de ll_esp (llista especialitats)-
 def fesScrapDocuments(ll_esp, ll_docs):
+    global s 
+
     for doc in ll_docs:
         print("------------------------------\n")
+
+        s = s + " -- cerca en --> ["+doc[0]+"]"+"\n"
         print(" -- cerca en --> ["+doc[0]+"]")
         
         textPDF = pdf_to_text(doc[0]) 
@@ -73,10 +85,11 @@ def fesScrapDocuments(ll_esp, ll_docs):
         for i in range(len(ll_linies_PDF)):
             for especialitat in ll_esp:
     	        if especialitat in ll_linies_PDF[i]:
-    	            print("\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i])
-    	            trobat = True
-    	     
+                    s = s + "\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i] + "\n"
+                    print("\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i])
+                    trobat = True
         if not trobat:
+            s = s + "\tNo s'han trobat especialitats, per ara, en aquest document"+"\n"
             print("\tNo s'han trobat especialitats, per ara, en aquest document")
         print("")
     
@@ -88,13 +101,18 @@ def esborra_pdfs(ll_esp, carregatPdfs):
             os.remove(pdf)
         
         
-#PRE: ll_esp: la llista espeicalitats | cataluyaCentral: una tupla amb dos valors (el nom del pdf de la cat central i la seva url
-#     cal que existeixi el pdf de la catalunya central al directori de treball.
-#POST: Impressio de si hi ha o no especialitats a la catalunyacentral i quines, si n'hi ha
+#PRE:    ll_esp: la llista espeicalitats | cataluyaCentral: una tupla amb dos valors (el nom del pdf de la cat central i la seva url
+#       cal que existeixi el pdf de la catalunya central al directori de treball.
+#POST:  Impressio de si hi ha o no especialitats a la catalunyacentral i quines, si n'hi ha
+
 #FUNCIONAMENT: Es una funció especial que lllegeix el document de la catalunya central que
-# és únic i requereix adaptar-s'hi. Llegeix perfecte al menys per a un nombre de documents no nul
+#       és únic i requereix adaptar-s'hi. Llegeix perfecte al menys per a un nombre de documents no nul. també guarda en la variable
+#       global s l'string que anira a la notificaicó mobil via pushover
 def fesScrapCatalunyaCentral(ll_esp, catalunyaCentral):
+    global s
     print("------------------------------\n")
+
+    s = s + " -- cerca ESPECÍFICA en --> ["+catalunyaCentral[0]+"]"+"\n"
     print(" -- cerca ESPECÍFICA en --> ["+catalunyaCentral[0]+"]")
 
     textPDF = pdf_to_text(catalunyaCentral[0]) 
@@ -108,7 +126,8 @@ def fesScrapCatalunyaCentral(ll_esp, catalunyaCentral):
             if linia.index("Especialitat") == 0:
                 for esp in ll_esp:
                     if esp in ll_linies_PDF[i+1].split()[0]:
-                        print("\t[[[ "+esp+ " ]]]\t"+ll_linies_PDF[i+1])
+                        s = s + "\t[[[ "+esp+ " ]]]\t" + ll_linies_PDF[i+1] + "\n"
+                        print("\t[[[ "+esp+ " ]]]\t" + ll_linies_PDF[i+1])
                         trobat = True
                 
                 i = i + 1 #salto la linia seguent perque no te sentit mirar una linia que ja se que no conte el grup Especialitat
@@ -118,6 +137,7 @@ def fesScrapCatalunyaCentral(ll_esp, catalunyaCentral):
         i = i + 1
 
     if not trobat:
+        s = s + "\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central" + "\n\n"
         print("\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central")
     print("")
 
@@ -151,3 +171,4 @@ if __name__ == "__main__":
     fesScrapDocuments(especialitats, llista_documents)
     fesScrapCatalunyaCentral(especialitats, catalunyaCentral)
     esborra_pdfs(llista_documents+[catalunyaCentral],True); #per evitar vestigis me'ls carrego un cop llegits (Si es true, si es false no fa res)
+    enviarNotificacio_Pushover(s) #s es l'string de la notificacio (si vols evitar que s'envii comenta aquesta linia)

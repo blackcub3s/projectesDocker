@@ -9,6 +9,7 @@ RUN pip install PyPDF2 && pip install pytz
 
 #copiem l'script a l'arrel de la imatge
 COPY parsejaDifCob.py /usr/src/app/
+COPY auxPushover.py /usr/src/app/
 
 # comanda per defecte que s'executarà a l'arrancar el contenidor instanciat a partir de la imatge
 CMD [ "python", "./parsejaDifCob.py" ]
