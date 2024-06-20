@@ -17,6 +17,8 @@ https://github.com/blackcub3s/projectesDocker/blob/5470b0485e9feb8026d3cfd3dc5c0
 
 # 3. ScrapEnsenyament
 
+# 3.1 Crear la imatge docker i executar un contenidor en local
+
 Dins de la carpeta [scrapEnsenyament](/scrapEnsenyament/) podem trobar l'script parsejaDifCob.py que pren una llista de URLs on hi ha diversos pdfs online amb ofertes laborals d'una borsa de professorat, que es van actualitzant periòdicament. En aquests llistats volem cercar grups de paraules (en aquest cas especialitats docents de les quals ens pugui interessar fer un seguiment).
 
 Per fer això el programa descarrega els pdfs, obté el seu text pla i cerca els grups de paraules dins dels text pla de cada PDF. Per cada PDF informarà pel canal estàndard de sortida si existeixen ofertes laborals i també enviarà una notificació "push" al meu mòbil de forma periòdica de les ofertes que van sortint.
@@ -116,4 +118,134 @@ difCob CatalunyaCentral.pdf descarregat correctament!
         No s'han trobat especialitats, per ara, en aquest document 
 ```
 
-# 3. to do
+# 3.2. Moure la imatge al registry d'azure i crear un contenindor al núvol
+
+## Pas 1:
+
+Per tal de poder tenir el constnidor de la nostra app funcionant en remot podem pujar la imatge a alguna de les arquitectures serverless disponibles: podem triar aws o azure, per exemple. Triem azure perquè té un plan de 100$ anuals en cas que siguis estudiant (a diferència de aws).
+
+Per tal de fer-ho hem de pujar la imatge a l'`azure container registry` o ACS. Un cop la tinguem allà dins el propi núvol podrem crear un contenidor que derivi d'aquesta imatge. 
+
+Per poder accedir al servei d'azure caldrà que instalem la command line interface d'Azure (la `azure cli`). Podem fer-ho seguint les instruccions de la [pàgina oficial](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt):
+
+PAS1: Instalem la cli amb el sistema precompilat pels desenvolupadors de microsoft (en aquest cas, una opció més senzilla que fer-ho amb el gestor de paquets apt):
+
+```
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+## PAS 2: Iniciem la sessió
+
+```
+az login 
+
+```
+Amb la comanda anterior ens redirigirà a l'aplicació web per iniciar sessió, que en el meu cas la confirmació per la terminal es veurà així:
+
+Vegeu imatge: [capturaAzureLogin.png](/scrapEnsenyament/img/capturaAzureLogin.png)
+
+Per veure que s'ha creat correctament podem fer `az account show` i obtiundrem la informació del nostre compte en format JSON:
+
+```
+{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "DADA PRIVADA",
+  "id": "DADA PRIVADA",
+  "isDefault": true,
+  "managedByTenants": [],
+  "name": "Azure for Students",
+  "state": "Enabled",
+  "tenantDefaultDomain": "edu.gva.es",
+  "tenantDisplayName": "Conselleria d'Educació",
+  "tenantId": "73dd1114-ef7d-40c7-8669-569d32e7e29b",
+  "user": {
+    "name": "EL_MEU_CORREU_PRIVAT@alu.edu.gva.es",
+    "type": "user"
+  }
+}
+
+```
+
+Acte seguit creem un grup. Cal especificar la localització i el nom del "resource-group", que serà com una espècie de col·lecció lògica de recursos que es gestiona com una sola entitat:
+
+``` 
+az group create --location westeurope --resource-group scrapEnsenyament
+
+```
+
+Si s'ha creat bé obtindrem una sortida per pantalla en format JSON  que identificarà el grup que acabem de crear (que també la podrem obtenir, després de crear el grup, fent `az group list` ):
+
+```
+{
+  "id": "/subscriptions/UNCODINOCOPIAT/resourceGroups/scrapEnsenyament",
+  "location": "westeurope",
+  "managedBy": null,
+  "name": "scrapEnsenyament",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+
+```
+Ara podem afegir una etiqueta al grup (no es obligatori però es una bona pràctica fer-ho):
+
+```
+az group update --name scrapEnsenyament --set tags.entorn=provesScrapEnsenyament
+
+```
+Si la comanda anterior s'ha executat correctament, en fer de nou `az group list` hauriem de veure que la clau "tags" dins del json imprès pel canal estàndard de sortida haruaid'haver canviat de null a "entorn":"provesScrapEnsenyament" així:
+
+```
+{
+  "id": "/subscriptions/UNCODINOCOPIAT/resourceGroups/scrapEnsenyament",
+  "location": "westeurope",
+  "managedBy": null,
+  "name": "scrapEnsenyament",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": {
+    "entorn": "provesScrapEnsenyament"
+  },
+  "type": "Microsoft.Resources/resourceGroups"
+}
+
+```
+# PAS 3: Connectem al azure container registry (el registre d'imatges d'azure o ACR)
+
+Per fer-ho tenim la següent comanda:
+
+```
+az acr login --name blackcub3s
+
+``` 
+
+# PAS 4: Etiquetem la imatge dins del registre d'imatges d'azure
+
+CAldrà especificar el servidor d'inici de sessió amb la següent sintaxi a la terminal:
+
+```
+docker tag <local_image_name>:<tag> <acr_login_server>/<repository_name>:<tag>
+``
+Per trobar el el servidor de login d'ACR anirem a portal.azure.com i clicarem en el link al nostre repositori:
+
+[imatge a repo acr no ha carregat!](/scrapEnsenyament/img/azure20jun_A.png)
+
+I consultarem l'acr_login_server:
+
+[imatge a servidor de login d'acr!](/scrapEnsenyament/img/azure20jun_B.png)
+
+I per tant la sintaxi ens queda per etiquetar la imatge correctament i poder-la pujar després és:
+
+```
+docker tag scrapensenyament:latest blackcub3s.azurecr.io/blackcub3s/scrapensenyament:latest
+```
+
+
+
+
+
+
+# 4. to do
