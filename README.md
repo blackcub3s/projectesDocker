@@ -222,26 +222,57 @@ az acr login --name blackcub3s
 
 ``` 
 
-# PAS 4: Etiquetem la imatge dins del registre d'imatges d'azure
+# PAS 4: Etiquetem la imatge localment en docker per fer-la apta per a pujar-la al registre d'imatges d'Azure
 
-CAldrà especificar el servidor d'inici de sessió amb la següent sintaxi a la terminal:
+Caldrà especificar el servidor d'inici de sessió amb la següent sintaxi a la terminal:
 
 ```
 docker tag <local_image_name>:<tag> <acr_login_server>/<repository_name>:<tag>
-``
-Per trobar el el servidor de login d'ACR anirem a portal.azure.com i clicarem en el link al nostre repositori:
+```
+Per trobar el servidor de login d'ACR anirem a portal.azure.com i clicarem en el link al nostre repositori:
 
 [imatge a repo acr no ha carregat!](/scrapEnsenyament/img/azure20jun_A.png)
 
-I consultarem l'acr_login_server:
+I aleshores en consultarem l'acr_login_server:
 
 [imatge a servidor de login d'acr!](/scrapEnsenyament/img/azure20jun_B.png)
 
-I per tant la sintaxi ens queda per etiquetar la imatge correctament i poder-la pujar després és:
+I per tant ara ja podem etiquetar la imatge "scrapensenyament" per poder-la pujar després a ACR és la següent. Per a fer-ho hem de indicar amb docker tah seguit de dos arguments: el primer, el nom de la imatge actual i la seva etiqueta (<nom_imatge>:<etiqueta>); i el segon el nom que tindrà l'alies de la imatge referenciada al primer argument, reflexant, entenc, els directoris interns del registry d'azure donats per: ` <acr_login_server>/<repository_name>/<image_name>:<tag> `. Per al nostre cas serà:
 
 ```
 docker tag scrapensenyament:latest blackcub3s.azurecr.io/blackcub3s/scrapensenyament:latest
 ```
+
+Comprovem que s'ha creat l'alies de la imatge etiquetada tal i com ho requereix azure, fent servir la comanda `docker images` i observem que la primera lína conté l'alies a la imatge:
+
+[imatge sobre alies d'imatge reetiquetada per azure no ha carregat!](/scrapEnsenyament/img/azure20jun_C.png)
+
+# PAS 5: Pujem la imatge al ACR mitjançant la subcomanda push de docker
+
+Ara que ja hem etiquetat la imatge per a que pugui emmagatzemar-se al container registry d'azure pujem la imatge reetiquetada amb la comanda push (simplement agafem el nom que hem reetiquetat, que serà el nom de l'alies de la imatge creada en l'apartat anterior seguit de l'etiqueta "latest"):
+
+```
+docker push blackcub3s.azurecr.io/blackcub3s/scraensenyament:latest
+```
+En fer això ens apareixerà la següent pantalla de pujada si ho hem fet bé (en aquest cas la imatge pesa 1 GB i tardarà en pujar-se):
+
+[imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_D.png)
+
+I quan acabi ens sortirà el següent missatge en la terminal, sense errors:
+
+[imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_E.png)
+
+I podrem veure que la imatge s'ha pujat mirant a les estadístiques del nostre repositori:
+
+[imatge de la imatge docker pujada no carregada](/scrapEnsenyament/img/azure20jun_F.png)
+
+
+
+EN RESUM, els passos per pujar la imatge de docker del nostre linux a l'ACR o registre de contenidors d'azure serà:
+
+1. Iniciar sessió (*login*): Autentiqueu-vos amb el vostre registre de contenidors d'Azure.
+2. Etiquetar: (*tag*) Etiqueteu la vostra imatge local amb el nom del servidor d'inici de sessió de l'ACR i el repositori.
+3. Pujar (*push*): Pugeu la imatge etiquetada a l'ACR.
 
 
 
