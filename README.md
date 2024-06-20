@@ -120,15 +120,15 @@ difCob CatalunyaCentral.pdf descarregat correctament!
 
 # 3.2. Moure la imatge al registry d'azure i crear un contenindor al núvol
 
-## Pas 1:
+## Pas 1: instalar 
 
-Per tal de poder tenir el constnidor de la nostra app funcionant en remot podem pujar la imatge a alguna de les arquitectures serverless disponibles: podem triar aws o azure, per exemple. Triem azure perquè té un plan de 100$ anuals en cas que siguis estudiant (a diferència de aws).
+Per tal de poder tenir el contenidor de la nostra app funcionant en remot podem pujar la imatge a alguna de les arquitectures serverless disponibles: podem triar AWS o Azure, per exemple. Triem azure perquè té un plan de 100$ anuals en cas que siguis estudiant (a diferència d'AWS).
 
 Per tal de fer-ho hem de pujar la imatge a l'`azure container registry` o ACS. Un cop la tinguem allà dins el propi núvol podrem crear un contenidor que derivi d'aquesta imatge. 
 
 Per poder accedir al servei d'azure caldrà que instalem la command line interface d'Azure (la `azure cli`). Podem fer-ho seguint les instruccions de la [pàgina oficial](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt):
 
-PAS1: Instalem la cli amb el sistema precompilat pels desenvolupadors de microsoft (en aquest cas, una opció més senzilla que fer-ho amb el gestor de paquets apt):
+## PAS1: Instalem la cli amb el sistema precompilat pels desenvolupadors de microsoft (en aquest cas, una opció més senzilla que fer-ho amb el gestor de paquets apt)
 
 ```
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -213,7 +213,7 @@ Si la comanda anterior s'ha executat correctament, en fer de nou `az group list`
 }
 
 ```
-# PAS 3: Connectem al azure container registry (el registre d'imatges d'azure o ACR)
+## PAS 3: Connectem al azure container registry (el registre d'imatges d'azure o ACR)
 
 Per fer-ho tenim la següent comanda:
 
@@ -222,7 +222,7 @@ az acr login --name blackcub3s
 
 ``` 
 
-# PAS 4: Etiquetem la imatge localment en docker per fer-la apta per a pujar-la al registre d'imatges d'Azure
+## PAS 4: Etiquetem la imatge localment en docker per fer-la apta per a pujar-la al registre d'imatges d'Azure
 
 Caldrà especificar el servidor d'inici de sessió amb la següent sintaxi a la terminal:
 
@@ -247,7 +247,7 @@ Comprovem que s'ha creat l'alies de la imatge etiquetada tal i com ho requereix 
 
 [imatge sobre alies d'imatge reetiquetada per azure no ha carregat!](/scrapEnsenyament/img/azure20jun_C.png)
 
-# PAS 5: Pujem la imatge al ACR mitjançant la subcomanda push de docker
+## PAS 5: Pujem la imatge al ACR mitjançant la subcomanda push de docker
 
 Ara que ja hem etiquetat la imatge per a que pugui emmagatzemar-se al container registry d'azure pujem la imatge reetiquetada amb la comanda push (simplement agafem el nom que hem reetiquetat, que serà el nom de l'alies de la imatge creada en l'apartat anterior seguit de l'etiqueta "latest"):
 
@@ -275,8 +275,8 @@ EN RESUM, els passos per pujar la imatge de docker del nostre linux a l'ACR o re
 3. Pujar (*push*): Pugeu la imatge etiquetada a l'ACR.
 
 
+## PAS 6: Creació de contenidor a partir de la imatge pujada a ACR fent servir kubernetes
 
-
-
-
+  TO DO
+  
 # 4. to do
