@@ -118,11 +118,11 @@ difCob CatalunyaCentral.pdf descarregat correctament!
         No s'han trobat especialitats, per ara, en aquest document 
 ```
 
-# 3.2. Moure la imatge al registry d'azure i crear un contenindor al núvol
+# 3.2. Moure la imatge al registry d'azure
 
 ## Pas 1: instalar 
 
-Per tal de poder tenir el contenidor de la nostra app funcionant en remot podem pujar la imatge a alguna de les arquitectures serverless disponibles: podem triar AWS o Azure, per exemple. Triem Azure perquè és completament gratuit, ja que té un plan de 100$ anuals en cas que siguis estudiant (a diferència d'AWS, que ens exigeix posar les dades d'un mètode de pagament).
+Per tal de poder tenir el contenidor de la nostra app funcionant en remot primer hem de poder pujar la imatge a alguna de les arquitectures serverless disponibles: podem triar AWS o Azure, per exemple. Triem Azure perquè és completament gratuit, ja que té un plan de 100$ anuals en cas que siguis estudiant (a diferència d'AWS, que ens exigeix posar les dades d'un mètode de pagament).
 
 Per tal de fer-ho hem de pujar la imatge a l'`azure container registry` o ACS. Un cop la tinguem allà dins el propi núvol podrem crear un contenidor que derivi d'aquesta imatge. 
 
@@ -277,8 +277,8 @@ I podrem veure que la imatge s'ha pujat mirant a les estadístiques del nostre r
 > 3. Pujar (*push*): caldrà fer un push de la imatge local reetiquetada (pujar-la fent servir el nom de l'àlies).
 
 
-## PAS 6: Creació de contenidor a partir de la imatge pujada a ACR fent servir kubernetes
+## 3.2: Creació d'un contenidor en el núvol d'Azure amb Kubernetes a partir de la imatge pujada a ACR (Azure)
 
   TO DO
   
-# 4. to do
+
