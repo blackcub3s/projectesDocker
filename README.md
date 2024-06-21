@@ -270,9 +270,9 @@ I podrem veure que la imatge s'ha pujat mirant a les estadístiques del nostre r
 
 > ### EN RESUM, els passos per pujar la imatge de docker del nostre linux a l'ACR o registre de contenidors d'azure serà:
 > 
-> 1. Iniciar sessió (*login*): Autentiqueu-vos amb el vostre registre de contenidors d'Azure.
-> 2. Etiquetar: (*tag*) Etiqueteu la vostra imatge local amb el nom del servidor d'inici de sessió de l'ACR i el repositori.
-> 3. Pujar (*push*): Pugeu la imatge etiquetada a l'ACR.
+> 1. Iniciar sessió (*login*): Autentiqueu-se amb el registre de contenidors d'Azure que tinguem.
+> 2. Etiquetar: (*tag*) caldrà crear un àlies de la imatge local que tingui el nom del servidor d'inici de sessió de l'ACR i el repositori amb el format ` <acr_login_server>/<repository_name>/<image_name>:<tag>
+> 3. Pujar (*push*): caldrà fer un push de la imatge local reetiquetada (pujar-la fent servir el nom de l'àlies).
 
 
 ## PAS 6: Creació de contenidor a partir de la imatge pujada a ACR fent servir kubernetes
