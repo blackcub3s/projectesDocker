@@ -65,7 +65,7 @@ docker start -a contenidor_scrap_ensenyament
 
 Podem veure el resultat de les dues comandes anteriors en la següent imatge:
 
-![imatge start i create no ha carregat](/scrapEnsenyament/img/startIcreate_demo.PNG)
+![imatge start i create no ha carregat](/scrapEnsenyament/img/startIcreate_demo.png)
 
 NOTA: No considero recomanable abuscar da la comanda de docker ```run``` perquè cada cop que l'utilitzem estem creant un nou contenidor i corrent-lo, no estem executant un contenidor que ja està creat. En canvi, si fem servir la comanda ```start`` sempre estem utilitzant un conductor ja existent (que crearem només un sol cop amb create).
 
