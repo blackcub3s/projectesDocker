@@ -144,7 +144,7 @@ az login
 ```
 Amb la comanda anterior ens redirigirà a l'aplicació web per iniciar sessió, que en el meu cas la confirmació per la terminal es veurà així:
 
-Vegeu imatge: [capturaAzureLogin.png](/scrapEnsenyament/img/capturaAzureLogin.png)
+![capturaAzureLogin.png](/scrapEnsenyament/img/capturaAzureLogin.png)
 
 Per veure que s'ha creat correctament podem fer `az account show` i obtiundrem la informació del nostre compte en format JSON:
 
