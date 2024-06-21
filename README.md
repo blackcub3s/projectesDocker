@@ -231,11 +231,11 @@ docker tag <local_image_name>:<tag> <acr_login_server>/<repository_name>:<tag>
 ```
 Per trobar el servidor de login d'ACR anirem a portal.azure.com i clicarem en el link al nostre repositori:
 
-[imatge a repo acr no ha carregat!](/scrapEnsenyament/img/azure20jun_A.png)
+![imatge a repo acr no ha carregat!](/scrapEnsenyament/img/azure20jun_A.png)
 
 I aleshores en consultarem l'acr_login_server:
 
-[imatge a servidor de login d'acr!](/scrapEnsenyament/img/azure20jun_B.png)
+![imatge a servidor de login d'acr!](/scrapEnsenyament/img/azure20jun_B.png)
 
 I per tant ara ja podem etiquetar la imatge "scrapensenyament" per poder-la pujar després a ACR és la següent. Per a fer-ho hem de indicar amb docker tah seguit de dos arguments: el primer, el nom de la imatge actual i la seva etiqueta (<nom_imatge>:<etiqueta>); i el segon el nom que tindrà l'alies de la imatge referenciada al primer argument, reflexant, entenc, els directoris interns del registry d'azure donats per: ` <acr_login_server>/<repository_name>/<image_name>:<tag> `. Per al nostre cas serà:
 
@@ -245,7 +245,7 @@ docker tag scrapensenyament:latest blackcub3s.azurecr.io/blackcub3s/scrapensenya
 
 Comprovem que s'ha creat l'alies de la imatge etiquetada tal i com ho requereix azure, fent servir la comanda `docker images` i observem que la primera lína conté l'alies a la imatge:
 
-[imatge sobre alies d'imatge reetiquetada per azure no ha carregat!](/scrapEnsenyament/img/azure20jun_C.png)
+![imatge sobre alies d'imatge reetiquetada per azure no ha carregat!](/scrapEnsenyament/img/azure20jun_C.png)
 
 ## PAS 5: Pujem la imatge al ACR mitjançant la subcomanda push de docker
 
@@ -256,15 +256,15 @@ docker push blackcub3s.azurecr.io/blackcub3s/scraensenyament:latest
 ```
 En fer això ens apareixerà la següent pantalla de pujada si ho hem fet bé (en aquest cas la imatge pesa 1 GB i tardarà en pujar-se):
 
-[imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_D.png)
+![imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_D.png)
 
 I quan acabi ens sortirà el següent missatge en la terminal, sense errors:
 
-[imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_E.png)
+![imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_E.png)
 
 I podrem veure que la imatge s'ha pujat mirant a les estadístiques del nostre repositori:
 
-[imatge de la imatge docker pujada no carregada](/scrapEnsenyament/img/azure20jun_F.png)
+![imatge de la imatge docker pujada no carregada](/scrapEnsenyament/img/azure20jun_F.png)
 
 
 
