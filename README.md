@@ -277,7 +277,7 @@ I podrem veure que la imatge s'ha pujat mirant a les estadístiques del nostre r
 > 3. Pujar (*push*): caldrà fer un push de la imatge local reetiquetada (pujar-la fent servir el nom de l'àlies).
 
 
-## 3.2: Creació d'un contenidor en el núvol d'Azure amb Kubernetes a partir de la imatge pujada a ACR (Azure)
+# 3.3: Creació d'un contenidor en el núvol d'Azure a partir de la imatge pujada a ACR (Azure) fent servir Kubernetes
 
   TO DO
   
