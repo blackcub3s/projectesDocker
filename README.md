@@ -118,7 +118,7 @@ difCob CatalunyaCentral.pdf descarregat correctament!
         No s'han trobat especialitats, per ara, en aquest document 
 ```
 
-# 3.2. Moure la imatge al registry d'azure
+# 3.2. Moure la imatge al registry d'Azure
 
 ## Pas 1: instalar 
 
@@ -128,7 +128,7 @@ Per tal de fer-ho hem de pujar la imatge a l'`azure container registry` o ACS. U
 
 Per poder accedir al servei d'Azure caldrà que instal·lem la "command line interface" d'Azure (la `azure cli`). Podem fer-ho seguint les instruccions de la [pàgina oficial](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt):
 
-## PAS 1: Instal·lem la cli amb el sistema precompilat pels desenvolupadors de Microsoft
+## PAS 2: Instal·lem la CLI amb el sistema precompilat pels desenvolupadors de Microsoft
 
 ```
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -136,7 +136,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 > ### NOTA
 > en aquest cas, fer-ho així és una opció més senzilla que fer-ho amb el gestor de paquets apt.
 
-## PAS 2: Iniciem la sessió
+## PAS 3: Iniciem la sessió
 
 ```
 az login 
@@ -191,13 +191,13 @@ Si s'ha creat bé obtindrem una sortida per pantalla en format JSON  que identif
 }
 
 ```
-Ara podem afegir una etiqueta al grup (no es obligatori però es una bona pràctica fer-ho):
+Ara podem afegir una etiqueta al grup (no es obligatori però es una bona pràctica afegir-la):
 
 ```
 az group update --name scrapEnsenyament --set tags.entorn=provesScrapEnsenyament
 
 ```
-Si la comanda anterior s'ha executat correctament, en fer de nou `az group list` hauriem de veure que la clau "tags" dins del json imprès pel canal estàndard de sortida haruaid'haver canviat de null a "entorn":"provesScrapEnsenyament" així:
+Si la comanda anterior s'ha executat correctament, en fer de nou `az group list` hauriem de veure que la clau "tags" dins del json imprès pel canal estàndard de sortida haria d'haver canviat de "null" a "entorn":"provesScrapEnsenyament" quedant així:
 
 ```
 {
@@ -215,7 +215,7 @@ Si la comanda anterior s'ha executat correctament, en fer de nou `az group list`
 }
 
 ```
-## PAS 3: Connectem al azure container registry (el registre d'imatges d'azure o ACR)
+## PAS 4: Connectem al Azure Container Registry (el registre d'imatges d'azure o ACR)
 
 Per fer-ho tenim la següent comanda:
 
@@ -224,7 +224,7 @@ az acr login --name blackcub3s
 
 ``` 
 
-## PAS 4: Etiquetem la imatge localment en docker per fer-la apta per a pujar-la al registre d'imatges d'Azure
+## PAS 5: Etiquetem la imatge localment en docker per fer-la apta per a pujar-la al registre d'imatges d'Azure
 
 Caldrà especificar el servidor d'inici de sessió amb la següent sintaxi a la terminal:
 
@@ -239,24 +239,24 @@ I aleshores en consultarem l'acr_login_server:
 
 ![imatge a servidor de login d'acr!](/scrapEnsenyament/img/azure20jun_B.png)
 
-I per tant ara ja podem etiquetar la imatge "scrapensenyament" per poder-la pujar després a ACR és la següent. Per a fer-ho hem de indicar amb docker tah seguit de dos arguments: el primer, el nom de la imatge actual i la seva etiqueta (<nom_imatge>:<etiqueta>); i el segon el nom que tindrà l'alies de la imatge referenciada al primer argument, reflexant, entenc, els directoris interns del registry d'azure donats per: ` <acr_login_server>/<repository_name>/<image_name>:<tag> `. Per al nostre cas serà:
+I per tant ara ja podem etiquetar la imatge "scrapensenyament" per poder-la pujar després a ACR és la següent. Per a fer-ho hem de indicar amb LA docker seguit de dos arguments: el primer, el nom de la imatge actual i la seva etiqueta (<nom_imatge>:<etiqueta>); i el segon el nom que tindrà l'alies de la imatge referenciada al primer argument, reflexant, entenc, els directoris interns del registry d'azure donats per: ` <acr_login_server>/<repository_name>/<image_name>:<tag> `. Per al nostre cas serà:
 
 ```
 docker tag scrapensenyament:latest blackcub3s.azurecr.io/blackcub3s/scrapensenyament:latest
 ```
 
-Comprovem que s'ha creat l'alies de la imatge etiquetada tal i com ho requereix azure, fent servir la comanda `docker images` i observem que la primera lína conté l'alies a la imatge:
+Comprovem que s'ha creat l'àlies de la imatge etiquetada tal i com ho requereix Azure, fent servir la comanda `docker images` i observem que la primera lína conté l'àlies a la imatge (no és una imatge nova encar que ho sembli):
 
 ![imatge sobre alies d'imatge reetiquetada per azure no ha carregat!](/scrapEnsenyament/img/azure20jun_C.png)
 
-## PAS 5: Pujem la imatge al ACR mitjançant la subcomanda push de docker
+## PAS 6: Pujem la imatge al ACR mitjançant la subcomanda push de docker
 
-Ara que ja hem etiquetat la imatge per a que pugui emmagatzemar-se al container registry d'azure pujem la imatge reetiquetada amb la comanda push (simplement agafem el nom que hem reetiquetat, que serà el nom de l'alies de la imatge creada en l'apartat anterior seguit de l'etiqueta "latest"):
+Ara que ja hem etiquetat la imatge per a que pugui emmagatzemar-se al container registry d'azure pujem la imatge reetiquetada amb la comanda subcomanda "push" (simplement agafem el nom de la imatge reetiquetada, que serà el nom de l'alies de la imatge de l'apartat anterior seguit de l'etiqueta "latest"):
 
 ```
 docker push blackcub3s.azurecr.io/blackcub3s/scraensenyament:latest
 ```
-En fer això ens apareixerà la següent pantalla de pujada si ho hem fet bé (en aquest cas la imatge pesa 1 GB i tardarà en pujar-se):
+En fer això ens apareixerà la següent pantalla de pujada si ho hem fet bé (en aquest cas la imatge pesa 1 GB i tardarà en pujar-se més que el de la nostra):
 
 ![imatge sobre la pujada a ACR de la imatge!](/scrapEnsenyament/img/azure20jun_D.png)
 
@@ -270,7 +270,7 @@ I podrem veure que la imatge s'ha pujat mirant a les estadístiques del nostre r
 
 
 
-> ### EN RESUM, els passos per pujar la imatge de docker del nostre linux a l'ACR o registre de contenidors d'azure serà:
+> ### EN RESUM, els passos per pujar la imatge de docker del nostre linux a l'ACR o registre de contenidors d'Azure serà:
 > 
 > 1. Iniciar sessió (*login*): Autentiqueu-se amb el registre de contenidors d'Azure que tinguem.
 > 2. Etiquetar: (*tag*) caldrà crear un àlies de la imatge local que tingui el nom del servidor d'inici de sessió de l'ACR i el repositori amb el format ` <acr_login_server>/<repository_name>/<image_name>:<tag>`
