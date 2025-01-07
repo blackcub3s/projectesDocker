@@ -152,9 +152,10 @@ if __name__ == "__main__":
 
     #LLISTA DE TUPLES (nom amb que guardaré el document, url d'on fem scrap del document)
     llista_documents = [("difCob Lleida.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/lleida/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/LLE-SEC-dificil-cobertura-oferta-vacants.pdf"),
-                        ("difCob Tarragona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/tarragona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TAR-SEC-dificil-cobertura-oferta-vacants.pdf"),
+                        ("difCob terresDeLebre.pdf", "https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/terres-ebre/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TEB-SEC-dificil-cobertura-oferta-vacants.pdf"), #ok 07.01
+                        ("difCob baixLLobregat.pdf", "https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/baix-llobregat/personal-docent/nomenaments-telematics/dificil-cobertura/serveis-educatius/PENDENTS_BLL-Serveis-Educatius-dificil-cobertura-oferta-vacants.pdf"),
+                        #("difCob Tarragona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/tarragona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TAR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob Girona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/girona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/GIR-SEC-dificil-cobertura-oferta-vacants.pdf"),
-                        ("difCob BaixLlob_CREDA_CFA.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/baix-llobregat/personal-docent/nomenaments-telematics/dificil-cobertura/serveis-educatius/PENDENTS_BLL-Serveis-Educatius-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob VallesOccidental.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/valles-occidental/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/VOC-SEC-dificil-cobertura-oferta-vacants.pdf"), 
                         ("difCob aran.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/alt-pirineu-aran/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/APA-SEC-dificil-cobertura-oferta-vacants.pdf")]
     
@@ -163,7 +164,7 @@ if __name__ == "__main__":
     
 
     #especialitats buscades als PDFs
-    especialitats = ["AN","PSI","627"]
+    especialitats = ["AN","PSI","627","SCS"]
     
 
     # si poso true actualitza els documents en temps real, sino tira dels que has descarregat prèviament (NO ELS GUARDA)
