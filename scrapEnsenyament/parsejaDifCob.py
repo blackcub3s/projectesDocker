@@ -122,30 +122,34 @@ def fesScrapCatalunyaCentral(ll_esp, catalunyaCentral):
     print(" -- cerca ESPECÍFICA en --> ["+catalunyaCentral[0]+"]")
 
     textPDF = pdf_to_text(catalunyaCentral[0]) 
-    ll_linies_PDF = textPDF.split("\n")
+    if textPDF == "errorPdfAtext":
+        s = s + "\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n"
+        print("\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n")            
+    else:
+        ll_linies_PDF = textPDF.split("\n")
 
-    i = 0
-    trobat = False
-    while i < len(ll_linies_PDF):
-        linia = ll_linies_PDF[i]
-        try:
-            if linia.index("Especialitat") == 0:
-                for esp in ll_esp:
-                    if esp in ll_linies_PDF[i+1].split()[0]:
-                        s = s + "\t[[[ "+esp+ " ]]]\t" + ll_linies_PDF[i+1] + "\n"
-                        print("\t[[[ "+esp+ " ]]]\t" + ll_linies_PDF[i+1])
-                        trobat = True
-                
-                i = i + 1 #salto la linia seguent perque no te sentit mirar una linia que ja se que no conte el grup Especialitat
-        except ValueError:
-            xuclaSeguentLinia = False
-        
-        i = i + 1
+        i = 0
+        trobat = False
+        while i < len(ll_linies_PDF):
+            linia = ll_linies_PDF[i]
+            try:
+                if linia.index("Especialitat") == 0:
+                    for esp in ll_esp:
+                        if esp in ll_linies_PDF[i+1].split()[0]:
+                            s = s + "\t[[[ "+esp+ " ]]]\t" + ll_linies_PDF[i+1] + "\n"
+                            print("\t[[[ "+esp+ " ]]]\t" + ll_linies_PDF[i+1])
+                            trobat = True
+                    
+                    i = i + 1 #salto la linia seguent perque no te sentit mirar una linia que ja se que no conte el grup Especialitat
+            except ValueError:
+                xuclaSeguentLinia = False
+            
+            i = i + 1
 
-    if not trobat:
-        s = s + "\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central" + "\n\n"
-        print("\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central")
-    print("")
+        if not trobat:
+            s = s + "\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central" + "\n\n"
+            print("\tNo s'han trobat especialitats, per ara, en el pdf de la catalunya central")
+        print("")
 
 
     
