@@ -26,14 +26,16 @@ def imprimeix_hora_espanyola():
 
 #FUNCIO FETA PER XAT GPT
 def pdf_to_text(file_path):
-    text = ""
-    with open(file_path, "rb") as file:
-        reader = PyPDF2.PdfReader(file)
-        for page_num in range(len(reader.pages)):
-            page = reader.pages[page_num]
-            text += page.extract_text() + "\n"
-    return text
-
+    try:
+        text = ""
+        with open(file_path, "rb") as file:
+            reader = PyPDF2.PdfReader(file)
+            for page_num in range(len(reader.pages)):
+                page = reader.pages[page_num]
+                text += page.extract_text() + "\n"
+        return text
+    except PyPDF2.errors.PdfReadError:
+        return "errorPdfAtext"
 
 
 
@@ -80,18 +82,22 @@ def fesScrapDocuments(ll_esp, ll_docs):
         print(" -- cerca en --> ["+doc[0]+"]")
         
         textPDF = pdf_to_text(doc[0]) 
-        ll_linies_PDF = textPDF.split("\n")
-        trobat = False
-        for i in range(len(ll_linies_PDF)):
-            for especialitat in ll_esp:
-    	        if especialitat in ll_linies_PDF[i]:
-                    s = s + "\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i] + "\n"
-                    print("\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i])
-                    trobat = True
-        if not trobat:
-            s = s + "\tNo s'han trobat especialitats, per ara, en aquest document"+"\n"
-            print("\tNo s'han trobat especialitats, per ara, en aquest document")
-        print("")
+        if textPDF == "errorPdfAtext":
+            s = s + "\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n"
+            print("\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n")            
+        else:
+            ll_linies_PDF = textPDF.split("\n")
+            trobat = False
+            for i in range(len(ll_linies_PDF)):
+                for especialitat in ll_esp:
+                    if especialitat in ll_linies_PDF[i]:
+                        s = s + "\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i] + "\n"
+                        print("\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i])
+                        trobat = True
+            if not trobat:
+                s = s + "\tNo s'han trobat especialitats, per ara, en aquest document"+"\n"
+                print("\tNo s'han trobat especialitats, per ara, en aquest document")
+            print("")
     
 #PRE: una llista d'especialitats de la qual prendras els noms dels pdfs de la primera columna
 #POST: pdfs esborrats de la carpeta
@@ -154,7 +160,7 @@ if __name__ == "__main__":
     llista_documents = [("difCob Lleida.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/lleida/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/LLE-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob terresDeLebre.pdf", "https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/terres-ebre/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TEB-SEC-dificil-cobertura-oferta-vacants.pdf"), #ok 07.01
                         ("difCob baixLLobregat.pdf", "https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/baix-llobregat/personal-docent/nomenaments-telematics/dificil-cobertura/serveis-educatius/PENDENTS_BLL-Serveis-Educatius-dificil-cobertura-oferta-vacants.pdf"),
-                        #("difCob Tarragona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/tarragona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TAR-SEC-dificil-cobertura-oferta-vacants.pdf"),
+                        ("difCob Tarragona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/tarragona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TAR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob Girona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/girona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/GIR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob VallesOccidental.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/valles-occidental/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/VOC-SEC-dificil-cobertura-oferta-vacants.pdf"), 
                         ("difCob aran.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/alt-pirineu-aran/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/APA-SEC-dificil-cobertura-oferta-vacants.pdf")]
