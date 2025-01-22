@@ -174,7 +174,9 @@ if __name__ == "__main__":
     
 
     #especialitats buscades als PDFs
-    especialitats = ["AN","PSI","627","SCS"]
+    especialitats = ["AN","PSI","627","507"]
+    
+    print("especialitats cercades "+str(especialitats)+"\n")
     
 
     # si poso true actualitza els documents en temps real, sino tira dels que has descarregat prèviament (NO ELS GUARDA)
