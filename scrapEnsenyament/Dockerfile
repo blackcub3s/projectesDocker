@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.11-alpine
 
 #especifiquem directori de treball on hi haurà l'arrel de l'aplicació
 WORKDIR /usr/src/app 
