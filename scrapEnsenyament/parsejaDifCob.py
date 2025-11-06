@@ -75,36 +75,42 @@ def guardaPdfs(llista_documents, descarregals):
 def fesScrapDocuments(ll_esp, ll_docs):
     global s 
 
-    for doc in ll_docs:
-        print("------------------------------\n")
+    try:
+        for doc in ll_docs:
+            print("------------------------------\n")
 
-        s = s + " -- cerca en --> ["+doc[0]+"]"+"\n"
-        print(" -- cerca en --> ["+doc[0]+"]")
-        
-        textPDF = pdf_to_text(doc[0]) 
-        if textPDF == "errorPdfAtext":
-            s = s + "\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n"
-            print("\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n")            
-        else:
-            ll_linies_PDF = textPDF.split("\n")
-            trobat = False
-            for i in range(len(ll_linies_PDF)):
-                for especialitat in ll_esp:
-                    if especialitat in ll_linies_PDF[i]:
-                        s = s + "\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i] + "\n"
-                        print("\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i])
-                        trobat = True
-            if not trobat:
-                s = s + "\tNo s'han trobat especialitats, per ara, en aquest document"+"\n"
-                print("\tNo s'han trobat especialitats, per ara, en aquest document")
-            print("")
+            s = s + " -- cerca en --> ["+doc[0]+"]"+"\n"
+            print(" -- cerca en --> ["+doc[0]+"]")
+            
+            textPDF = pdf_to_text(doc[0]) 
+            if textPDF == "errorPdfAtext":
+                s = s + "\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n"
+                print("\t----- ################################################# ------\n\t----- ### ERROR DE TRANSCRIPCIÓ EN AQUEST DOCUMENT! ### ------\n\t----- ################################################# ------\n")            
+            else:
+                ll_linies_PDF = textPDF.split("\n")
+                trobat = False
+                for i in range(len(ll_linies_PDF)):
+                    for especialitat in ll_esp:
+                        if especialitat in ll_linies_PDF[i]:
+                            s = s + "\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i] + "\n"
+                            print("\t[[[ "+especialitat+ " ]]]\t"+ll_linies_PDF[i])
+                            trobat = True
+                if not trobat:
+                    s = s + "\tNo s'han trobat especialitats, per ara, en aquest document"+"\n"
+                    print("\tNo s'han trobat especialitats, per ara, en aquest document")
+                print("")
+    except FileNotFoundError:
+        print("Compte: el fitxer no s'ha trobat. Probablement hagi canviat de nom!")
     
 #PRE: una llista d'especialitats de la qual prendras els noms dels pdfs de la primera columna
-#POST: pdfs esborrats de la carpeta
+#POST: pdfs esborrats de la carpeta (si un PDF no s'havia pogut descarregar previament, evito el FileNotFoundError)
 def esborra_pdfs(ll_esp, carregatPdfs):
     if carregatPdfs:
         for pdf, url in ll_esp:
-            os.remove(pdf)
+            try:
+                os.remove(pdf)
+            except FileNotFoundError:
+                pass
         
         
 #PRE:    ll_esp: la llista espeicalitats | cataluyaCentral: una tupla amb dos valors (el nom del pdf de la cat central i la seva url
@@ -167,11 +173,18 @@ if __name__ == "__main__":
                         ("difCob Tarragona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/tarragona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/TAR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob Girona.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/girona/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/GIR-SEC-dificil-cobertura-oferta-vacants.pdf"),
                         ("difCob VallesOccidental.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/valles-occidental/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/VOC-SEC-dificil-cobertura-oferta-vacants.pdf"), 
-                        ("difCob aran.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/alt-pirineu-aran/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/APA-SEC-dificil-cobertura-oferta-vacants.pdf")]
+                        ("difCob aran.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/alt-pirineu-aran/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/APA-SEC-dificil-cobertura-oferta-vacants.pdf"),
+                        ("difCob Barcelonès.pdf", "https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/barcelones/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/Barcelones-SEC-dificil-cobertura-oferta-vacants_31102025.pdf")
+                        ]
     
     #EL PDF DE LA CATALUNYA CENTRAL ES MOLT DIFERENT I CAL TRACTAR-LO A PART
     catalunyaCentral = ("difCob CatalunyaCentral.pdf","https://educacio.gencat.cat/web/.content/home/departament/serveis-territorials/catalunya-central/personal-docent/nomenaments-telematics/dificil-cobertura/secundaria/CCE-SEC-dificil-cobertura-oferta-vacants.pdf")
     
+
+    #TO DO -- FALTA AFEGIR AQUESTS DOCUMENTS DE DIFICIL COBERTURA QUE SON ESPECIALS
+
+    #Maresme - Vallès Oriental --- ESPERANT PDF
+    #Penedès    ----- ESPERANT EL PDF QUE M'ENVIIN PER CORREU (LINK NO TROBAT)
 
     #especialitats buscades als PDFs
     especialitats = ["AN","PSI","627","507"]
