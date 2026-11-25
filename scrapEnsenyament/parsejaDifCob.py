@@ -80,7 +80,7 @@ def fesScrapDocuments(ll_esp, ll_docs):
             print("------------------------------\n")
 
             s = s + " -- cerca en --> ["+doc[0]+"]"+"\n"
-            print(" -- cerca en --> ["+doc[0]+"]")
+            print(" -- cerca en --> "+ f"\033]8;;{doc[1]}\007\033[4;36m[{doc[0]}]\033[0m\033]8;;\007\n")
             
             textPDF = pdf_to_text(doc[0]) 
             if textPDF == "errorPdfAtext":
@@ -125,7 +125,8 @@ def fesScrapCatalunyaCentral(ll_esp, catalunyaCentral):
     print("------------------------------\n")
 
     s = s + " -- cerca ESPECÍFICA en --> ["+catalunyaCentral[0]+"]"+"\n"
-    print(" -- cerca ESPECÍFICA en --> ["+catalunyaCentral[0]+"]")
+    print(" -- cerca ESPECÍFICA en --> "+ f"\033]8;;{catalunyaCentral[1]}\007\033[4;36m[{catalunyaCentral[0]}]\033[0m\033]8;;\007\n")
+    
 
     textPDF = pdf_to_text(catalunyaCentral[0]) 
     if textPDF == "errorPdfAtext":
